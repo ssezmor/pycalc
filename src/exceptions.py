@@ -1,9 +1,6 @@
 import sys
 
-class BaseCalculatroExceptio(Exception):
-    pass
-
-class CalculatorError(BaseCalculatroExceptio):
+class BaseCalculatorException(Exception):
     """Docstring."""
 
     def __init__(self, message=None):
@@ -16,3 +13,18 @@ class CalculatorError(BaseCalculatroExceptio):
         print(self.message)
 
         sys.exit(1)
+
+class CalculatorError(BaseCalculatorException):
+    """Docstring."""
+    def __init__(self, message=None):
+        """Docstring."""
+        super().__init__()
+
+class PreprocessingError(BaseCalculatorException):
+    """Docstring."""
+    def __init__(self, message=None):
+        """Docstring."""
+        super().__init__()
+
+
+

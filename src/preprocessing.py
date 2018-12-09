@@ -4,7 +4,7 @@ from exceptions import PreprocessingError
 from operators import OPERATORS
 
 class Preprocessor:
-   """Docstring."""
+    """Docstring."""
 
     def __init__(self, expression):
         """Docstring."""
@@ -45,7 +45,7 @@ class Preprocessor:
             if old_exp == self.expression:
                 break
 
-    def prepare_expression():
+    def prepare_expression(self):
         """Docstring."""
         self._preprocessing()
         return self.expression

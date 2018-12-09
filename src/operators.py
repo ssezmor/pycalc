@@ -1,4 +1,4 @@
-"""Data"""
+"""Operators, constants, unary operators and comparison symbol's for pycalc"""
 
 import operator
 import builtins
