@@ -3,7 +3,7 @@ from exceptions import PreprocessingError
 
 from operators import OPERATORS
 
-class Preprocessing:
+class Preprocessor:
    """Docstring."""
 
     def __init__(self, expression):
@@ -45,7 +45,7 @@ class Preprocessing:
             if old_exp == self.expression:
                 break
 
-    def start_preprocessing():
+    def prepare_expression():
         """Docstring."""
         self._preprocessing()
         return self.expression
