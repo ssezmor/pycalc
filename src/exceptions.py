@@ -7,24 +7,23 @@ class BaseCalculatorException(Exception):
         """Docstring."""
 
         if message is None:
-            message = 'An error occured while working pycalc'
+            message = 'an error occured while working pycalc'
         self.message = 'ERROR: {}'.format(message)
 
         print(self.message)
 
-        sys.exit(1)
+        #sys.exit(1)
+
 
 class CalculatorError(BaseCalculatorException):
     """Docstring."""
     def __init__(self, message=None):
         """Docstring."""
-        super().__init__()
+        super().__init__(message)
+
 
 class PreprocessingError(BaseCalculatorException):
     """Docstring."""
     def __init__(self, message=None):
         """Docstring."""
-        super().__init__()
-
-
-
+        super().__init__(message)

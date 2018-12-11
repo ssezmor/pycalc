@@ -2,50 +2,56 @@
 from exceptions import PreprocessingError
 
 from operators import OPERATORS
+from operators import CONSTANTS
 
-class Preprocessor:
+def preprocessing(expression):
+
+    if not expression:
+        raise PreprocessingError('expression is empty')
+
+    if not isinstance(expression, str):
+        raise PreprocessingError('expression is not a string')
+
+    if expression.count('(') != expression.count(')'):
+        raise PreprocessingError('brackets are not balanced')
+
+    expression = expression.lower()
+
+    if not is_operators_available(expression):
+        raise PreprocessingError('there are no operators in the expression')
+
+    expression = expression.replace('**', '^')
+
+    expression = clean_repeatable_operators(expression)
+
+    return expression
+
+
+def is_operators_available(expression):
+    for statement in OPERATORS:
+        if statement in expression:
+            return True
+
+    for statement in CONSTANTS:
+        if statement in expression:
+            return True
+    return False
+
+
+def clean_repeatable_operators(expression):
+    repeatable_operators = {'+-': '-', '--': '+', '++': '+', '-+': '-'}
+
+    while True:
+        old_exp = expression
+        for old, new in repeatable_operators.items():
+            expression = expression.replace(old, new)
+        if old_exp == expression:
+            break
+
+    return expression
+
+
+def prepare_expression(expression):
     """Docstring."""
 
-    def __init__(self, expression):
-        """Docstring."""
-        self.expression = expression
-
-    def _preprocessing(self):
-
-        if not self.expression:
-            raise PreprocessingError('Expression is empty')
-
-        if not isinstance(self.expression, str):
-            raise PreprocessingError('Expression is not a string')
-
-        if self.expression.count('(') != self.expression.count(')'):
-            raise PreprocessingError('Brackets are not balanced')
-
-        self.expression = self.expression.lower()
-
-        if not self._is_operators_available():
-            raise PreprocessingError('There are no operators in the expression')
-
-        self.expression = self.expression.replace(' ', '')
-        self._clean_repeatable_operators()
-
-    def _is_operators_available(self):
-        for statement in OPERATORS:
-            if statement in self.expression:
-                return True
-        return False
-
-    def _clean_repeatable_operators(self):
-        repeatable_operators = {'+-': '-', '--': '+', '++': '+', '-+': '-'}
-
-        while True:
-            old_exp = self.expression
-            for old, new in repeatable_operators.items():
-                self.expression = self.expression.replace(old, new)
-            if old_exp == self.expression:
-                break
-
-    def prepare_expression(self):
-        """Docstring."""
-        self._preprocessing()
-        return self.expression
+    return preprocessing(expression)

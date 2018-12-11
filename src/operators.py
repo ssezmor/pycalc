@@ -1,4 +1,4 @@
-"""Operators, constants, unary operators and comparison symbol's for pycalc"""
+"""Operators, constants, unary operators and comparison symbol's for pycalc."""
 
 import operator
 import builtins
@@ -20,6 +20,7 @@ OPERATORS = {
     '//': OPERATOR(2, operator.floordiv, 2),
     '%': OPERATOR(2, operator.mod, 2),
     '^': OPERATOR(3, operator.pow, 2),
+
     'sin': OPERATOR(4, math.sin, 1),
     'cos': OPERATOR(4, math.cos, 1),
     'asin': OPERATOR(4, math.asin, 1),
@@ -43,6 +44,7 @@ OPERATORS = {
     'abs': OPERATOR(4, builtins.abs, 1),
     'round': OPERATOR(4, builtins.round, 3),
     'log': OPERATOR(4, math.log, 3),
+
     '<': OPERATOR(0, operator.lt, 2),
     '<=': OPERATOR(0, operator.le, 2),
     '==': OPERATOR(0, operator.eq, 2),
@@ -56,4 +58,4 @@ OPERATORS = {
     '+@': OPERATOR(2, None, 0)
 }
 
-CONSTANTS = {'e': math.e, 'pi': math.pi, 'tau': math.tau}
+CONSTANTS = {a: getattr(math, a) for a in dir(math) if isinstance(getattr(math, a), float)}
