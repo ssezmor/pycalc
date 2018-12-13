@@ -1,11 +1,8 @@
 """Pure-python command-line calculator."""
 
 import argparse
-import sys
 
-sys.path.append('src') 
-
-from calculator import Calculator
+from src import calculator
 
 def main():
     """Docstring."""
@@ -14,7 +11,7 @@ def main():
     parser.add_argument('EXPRESSION', help='expression string to evaluate')
     args = parser.parse_args()
 
-    pycalc = Calculator(args.EXPRESSION)
+    pycalc = calculator.Calculator(args.EXPRESSION)
     print(pycalc.calculate())
 
 

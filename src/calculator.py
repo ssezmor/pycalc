@@ -1,12 +1,12 @@
 
-from exceptions import CalculatorError
+from .exceptions import CalculatorError
 
-from operators import OPERATORS
-from operators import CONSTANTS
-from operators import UNARY_OPERATORS
-from operators import COMPARISON_SYMBOLS
+from .operators import OPERATORS
+from .operators import CONSTANTS
+from .operators import UNARY_OPERATORS
+from .operators import COMPARISON_SYMBOLS
 
-from preprocessing import prepare_expression
+from .preprocessing import prepare_expression
 
 
 class Calculator:
@@ -96,7 +96,7 @@ class Calculator:
                 self.stack.append('*')
             else:
                 self._process_operator()
-                self.stack.append(symbol)
+            self.stack.append(symbol)
         elif symbol == ')':
             self._process_number_and_constant()
             while self.stack:

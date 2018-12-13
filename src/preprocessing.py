@@ -1,8 +1,8 @@
 
-from exceptions import PreprocessingError
+from .exceptions import PreprocessingError
 
-from operators import OPERATORS
-from operators import CONSTANTS
+from .operators import OPERATORS
+from .operators import CONSTANTS
 
 def preprocessing(expression):
 
