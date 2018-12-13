@@ -3,7 +3,7 @@
 import unittest
 
 import sys
-sys.path.append('..')  # Ant: You don't need to add path like this, just add __init__.py in src
+sys.path.append('..')
 
 import math
 
