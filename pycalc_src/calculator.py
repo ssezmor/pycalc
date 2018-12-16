@@ -1,12 +1,12 @@
 
-from src.exceptions import CalculatorError
+from pycalc_src.exceptions import CalculatorError
 
-from src.operators import OPERATORS
-from src.operators import CONSTANTS
-from src.operators import UNARY_OPERATORS
-from src.operators import COMPARISON_SYMBOLS
+from pycalc_src.operators import OPERATORS
+from pycalc_src.operators import CONSTANTS
+from pycalc_src.operators import UNARY_OPERATORS
+from pycalc_src.operators import COMPARISON_SYMBOLS
 
-from src.preprocessing import prepare_expression
+from pycalc_src.preprocessing import prepare_expression
 
 from numbers import Number
 

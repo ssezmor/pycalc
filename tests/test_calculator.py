@@ -8,8 +8,8 @@ import math
 
 from collections import namedtuple
 
-from src.calculator import Calculator
-from src.exceptions import BaseCalculatorException
+from pycalc_src.calculator import Calculator
+from pycalc_src.exceptions import BaseCalculatorException
 
 
 class TestStringMethods(unittest.TestCase):

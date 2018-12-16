@@ -4,7 +4,7 @@
 
 import argparse
 
-from src import Calculator
+from pycalc_src import Calculator
 
 def main():
     """Docstring."""

@@ -4,10 +4,10 @@ import unittest
 
 from collections import namedtuple
 
-from src.preprocessing import (_preprocessing,
+from pycalc_src.preprocessing import (_preprocessing,
                                _is_operators_available,
                                _clean_repeatable_operators)
-from src.exceptions import BaseCalculatorException
+from pycalc_src.exceptions import BaseCalculatorException
 
 class TestStringMethods(unittest.TestCase):
     """Docstring."""

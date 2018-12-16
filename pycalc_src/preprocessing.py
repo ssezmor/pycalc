@@ -1,8 +1,8 @@
 
-from src.exceptions import PreprocessingError
+from pycalc_src.exceptions import PreprocessingError
 
-from src.operators import OPERATORS
-from src.operators import CONSTANTS
+from pycalc_src.operators import OPERATORS
+from pycalc_src.operators import CONSTANTS
 
 
 def _preprocessing(expression):
