@@ -6,11 +6,15 @@ import math
 
 from collections import namedtuple
 
+
 UNARY_OPERATORS = {'-': '-@', '+': '+@'}
+
 
 COMPARISON_SYMBOLS = ('!', '<', '>', '=')
 
+
 OPERATOR = namedtuple('OPERATOR', 'priority function params_quantity')
+
 
 OPERATORS = {
     '+': OPERATOR(1, operator.add, 2),

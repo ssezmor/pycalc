@@ -1,13 +1,14 @@
 
-from .exceptions import CalculatorError
+from src.exceptions import CalculatorError
 
-from .operators import OPERATORS
-from .operators import CONSTANTS
-from .operators import UNARY_OPERATORS
-from .operators import COMPARISON_SYMBOLS
+from src.operators import OPERATORS
+from src.operators import CONSTANTS
+from src.operators import UNARY_OPERATORS
+from src.operators import COMPARISON_SYMBOLS
 
-from .preprocessing import prepare_expression
+from src.preprocessing import prepare_expression
 
+from numbers import Number
 
 class Calculator:
     """Docstring."""
@@ -22,17 +23,19 @@ class Calculator:
         self.stack = []
 
     def _process_digit(self, index, symbol):
+
         if self.expression[index - 1] == ' ' and self.number:
             raise CalculatorError('invalid syntax')
         self.number += symbol
 
     def _process_number_and_constant(self):
+
         if self.unary_operator:
             self.unary_operator = self._replace_unary_operator(self.unary_operator)
 
         if self.number:
             self.rpn.append(self._convert_to_number('{}{}'.format(self.unary_operator,
-                                                            self.number)))
+                                                                  self.number)))
             self.number = ''
 
         if self.operator in CONSTANTS:
@@ -45,6 +48,7 @@ class Calculator:
         self.unary_operator = ''
 
     def _process_operator(self):
+
         if self.unary_operator:
             self.stack.append(self.unary_operator)
 
@@ -57,6 +61,7 @@ class Calculator:
         self.operator = ''
 
     def _process_stack(self, symbol):
+
         while self.stack:
             if self.stack[-1] == symbol == '^':
                 break
@@ -69,6 +74,7 @@ class Calculator:
         self.stack.append(symbol)
 
     def _process_comparison(self, index, symbol):
+
         self._process_number_and_constant()
 
         if self.stack and self.stack[-1] in COMPARISON_SYMBOLS:
@@ -82,6 +88,7 @@ class Calculator:
             self.stack.append(symbol)
 
     def _process_brackets_and_comma(self, symbol):
+
         if symbol == ',':
             self._process_number_and_constant()
             while self.stack:
@@ -106,11 +113,13 @@ class Calculator:
                 self.rpn.append(element)
 
     def _is_unary_operator(self, index, symbol):
+
         if symbol not in UNARY_OPERATORS:
             return False
         if index <= len(self.expression):
             prev_symbol = self.expression[index - 1]
-            if index == 0 or (prev_symbol in OPERATORS and prev_symbol != ')'):
+            if index == 0 or (prev_symbol in OPERATORS and prev_symbol != ')'
+                              or prev_symbol in COMPARISON_SYMBOLS):
                 return True
         return False
 
@@ -121,7 +130,6 @@ class Calculator:
 
     def _process_expression(self):
         for index, symbol in enumerate(self.expression):
-            print('0', index, symbol, 'number {}'.format(self.number), 'operator {}'.format(self.operator), 'stack {}'.format(self.stack), 'rpn {}'.format(self.rpn))
 
             if self.operator in CONSTANTS:
                 self._process_number_and_constant()
@@ -137,7 +145,7 @@ class Calculator:
             elif symbol in ('(', ',', ')'):
                 self._process_brackets_and_comma(symbol)
             elif symbol in OPERATORS:
-                if self._is_floordiv(index, symbol):
+                if self.stack and self._is_floordiv(index, symbol):
                     self.stack[-1] += symbol
                     continue
 
@@ -149,8 +157,6 @@ class Calculator:
                 self._process_stack(symbol)
             elif symbol.isalpha() or symbol == '=':
                 self.operator += symbol
-
-            print('1', index, symbol, 'number {}'.format(self.number), 'operator {}'.format(self.operator), 'stack {}'.format(self.stack), 'rpn {}'.format(self.rpn))
 
         self._process_number_and_constant()
         self.rpn.extend(reversed(self.stack))
@@ -164,34 +170,26 @@ class Calculator:
 
         operator_params = OPERATORS[operator]
 
-        if operator_params.params_quantity == 1:
-            if len(self.stack) < 1:
-                raise CalculatorError("not enough operand's for function {}".format(operator))
+        real_params_count = operator_params.params_quantity
+        if real_params_count == 3:  # 'round' , 'log', 'hypot', 'atan2'
+            if self.stack and self.stack[-1] == ',':
+                self.stack.pop()
+                real_params_count = 2
+            else:
+                real_params_count = 1
 
+        if len(self.stack) < real_params_count:
+            raise CalculatorError("not enough operand's for function {}".format(operator))
+        elif self.stack and not isinstance(self.stack[-1], Number):
+            raise CalculatorError("incorrect operand's for function {}".format(operator))
+
+        if real_params_count == 1:
             operand = self.stack.pop()
             self._calculate_result(operator_params.function, operand)
-        elif operator_params.params_quantity == 2:
-            if len(self.stack) < 2:
-                raise CalculatorError("not enough operand's for function {}".format(operator))
-
+        elif real_params_count == 2:
             second_operand = self.stack.pop()
             first_operand = self.stack.pop()
             self._calculate_result(operator_params.function, first_operand, second_operand)
-        elif operator_params.params_quantity == 3:  # 'round' , 'log', 'hypot', 'atan2'
-            if self.stack and self.stack[-1] == ',':
-                if len(self.stack) < 3:
-                    raise CalculatorError("not enough operand's for function {}".format(operator))
-
-                self.stack.pop()
-                second_operand = self.stack.pop()
-                first_operand = self.stack.pop()
-                self._calculate_result(operator_params.function, first_operand, second_operand)
-            else:
-                if len(self.stack) < 1:
-                    raise CalculatorError("not enough operand's for function {}".format(operator))
-
-                operand = self.stack.pop()
-                self._calculate_result(operator_params.function, operand)
 
     def _calculate_result(self, function, first_operand, second_operand=None):
 
@@ -210,7 +208,7 @@ class Calculator:
             self.stack.append(result)
 
     def _calculate_rpn(self):
-        print(self.rpn)
+
         for item in self.rpn:
             if item == ',':
                 self.stack.append(item)

@@ -1,10 +1,11 @@
 
-from .exceptions import PreprocessingError
+from src.exceptions import PreprocessingError
 
-from .operators import OPERATORS
-from .operators import CONSTANTS
+from src.operators import OPERATORS
+from src.operators import CONSTANTS
 
-def preprocessing(expression):
+
+def _preprocessing(expression):
 
     if not expression:
         raise PreprocessingError('expression is empty')
@@ -17,17 +18,17 @@ def preprocessing(expression):
 
     expression = expression.lower()
 
-    if not is_operators_available(expression):
+    if not _is_operators_available(expression):
         raise PreprocessingError('there are no operators in the expression')
 
     expression = expression.replace('**', '^')
 
-    expression = clean_repeatable_operators(expression)
+    expression = _clean_repeatable_operators(expression)
 
     return expression
 
 
-def is_operators_available(expression):
+def _is_operators_available(expression):
     for statement in OPERATORS:
         if statement in expression:
             return True
@@ -38,7 +39,7 @@ def is_operators_available(expression):
     return False
 
 
-def clean_repeatable_operators(expression):
+def _clean_repeatable_operators(expression):
     repeatable_operators = {'+-': '-', '--': '+', '++': '+', '-+': '-'}
 
     while True:
@@ -54,4 +55,4 @@ def clean_repeatable_operators(expression):
 def prepare_expression(expression):
     """Docstring."""
 
-    return preprocessing(expression)
+    return _preprocessing(expression)
